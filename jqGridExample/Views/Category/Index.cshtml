@@ -1,0 +1,25 @@
+﻿@using jqGridExample.Helpers.Extensions
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@{ 
+    IDictionary<string, string> actions = new Dictionary<string, string>();
+    MvcHtmlString editUrl = Html.ActionLink("Edit", "Edit", new { id = "[CategoryId]" });
+    MvcHtmlString detailsUrl = Html.ActionLink("Details", "Details", new { id = "[CategoryId]" });
+    MvcHtmlString deleteUrl = Html.ActionLink("Delete", "Delete", new { id = "[CategoryId]" });
+    MvcHtmlString productsUrl = @Html.ActionLink("Products", "Index", "Product", new { categoryId = "[CategoryId]" }, null);
+    actions.Add("Edit", editUrl.ToHtmlString());
+    actions.Add("Details", detailsUrl.ToHtmlString());
+    actions.Add("Delete", deleteUrl.ToHtmlString());
+    actions.Add("Products", productsUrl.ToHtmlString());
+    
+    Html.RenderGrid("AllCategories", actions: actions);
+}

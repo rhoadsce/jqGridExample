@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Grid xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GridId>0</GridId>
+  <Name>AllCategories</Name>
+  <Title>AllCategories</Title>
+  <StoredProcedure>AllCategories</StoredProcedure>
+  <Columns>
+    <GridColumn>
+      <GridColumnId>0</GridColumnId>
+      <Name>CategoryId</Name>
+      <Caption>CategoryId</Caption>
+      <DataType>System.Int32</DataType>
+      <IsHidden>true</IsHidden>
+    </GridColumn>
+    <GridColumn>
+      <GridColumnId>0</GridColumnId>
+      <Name>Name</Name>
+      <Caption>Name</Caption>
+      <DataType>System.String</DataType>
+      <IsHidden>false</IsHidden>
+    </GridColumn>
+  </Columns>
+  <Parameters />
+  <Actions />
+</Grid>

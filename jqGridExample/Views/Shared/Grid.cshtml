@@ -1,0 +1,119 @@
+﻿@model jqGridExample.Models.Grid
+@using jqGridExample.Helpers.Extensions
+
+<h2>@Model.Title</h2>
+@{
+	ViewContext.Controller.ViewBag.Title = Model.Title;
+	Guid gridGuid = Guid.NewGuid();
+	List<string> columns = new List<string>();
+	List<string> columnModels = new List<string>();
+    List<string> actions = new List<string>();
+    string jsColumns = string.Empty;
+    string jsColumnModels = string.Empty;
+    string containerId = "GridContainer" + gridGuid;
+    string gridFormId = "GridForm" + gridGuid;
+    string gridActionsId = "GridActions" + gridGuid;
+    string formId = "Form" + gridGuid;
+    string gridId = "Grid" + gridGuid;
+    string gridPagerId = "GridPager" + gridGuid;
+	if (Model.Columns.Count != 0)
+	{
+		foreach (var column in Model.Columns)
+		{
+			columns.Add("'" + column.Caption + "'");
+			System.Text.StringBuilder model = new System.Text.StringBuilder();
+			model.Append("{");
+			model.AppendFormat("name: '{0}'", column.Name);
+			model.AppendFormat(", index: '{0}'", column.Name);
+			model.AppendFormat(", hidden: {0}", column.IsHidden.ToString().ToLower());
+            if (Type.GetType(column.DataType) == typeof(int) || Type.GetType(column.DataType) == typeof(decimal))
+            {
+                model.Append(", align: 'right'");
+            }
+			model.Append("}");
+			columnModels.Add(model.ToString());
+		}
+        if (Model.Actions.Count != 0)
+        {
+            columns.Add("''");
+            System.Text.StringBuilder model = new System.Text.StringBuilder();
+            model.Append("{");
+            model.Append("name: 'Actions', index: 'Actions', sortable: false, align: 'center'");
+            model.AppendFormat(", formatter: function (cellvalue, options, rowObject) {{ return	ActionFormatter(cellvalue, options, rowObject, '{0}'); }}", gridGuid.ToString());
+            model.Append("}");
+            columnModels.Add(model.ToString());
+            
+            foreach (var action in Model.Actions)
+            {
+                actions.Add(action.Link);
+            }
+        }
+		jsColumns = "[";
+		jsColumnModels = "[";
+        jsColumns = jsColumns + columns.ToDelimitedString(",")+ "]";
+        jsColumnModels = jsColumnModels + columnModels.ToDelimitedString(",") + "]";
+                
+	}
+}
+
+<div id="@containerId" class="GridContainer">
+	<div id="@gridFormId" class="GridForm">
+		<form id="@formId" action="">
+			@Html.Hidden("GridName", Model.Name)
+            @foreach (jqGridExample.Models.GridParameter parameter in Model.Parameters)
+            {
+        		@Html.Hidden(parameter.Name, parameter.DefaultValue)
+            }
+		</form>
+	</div>
+	<table id="@gridId"></table>
+	<div id="@gridPagerId" class="GridPager"></div>
+    <input type="hidden" id="@gridActionsId" value="@actions.ToDelimitedString("|")" />
+	<br />
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript">
+    function GetCallbackUrl(gridId) {
+	    var url = "/GridExecution/GridData?";
+        url = url + $('#Form' + gridId).serialize();
+        return url;
+    }
+    
+    function SetGridWidth(gridId) {
+	    var gridwidth = $('#GridForm' + gridId)[0].clientWidth;
+        $('#Grid' + gridId).setGridWidth(gridwidth, true);
+    }
+
+    function ActionFormatter(cellvalue, options, rowObject, gridId)
+    {
+        var actions = decodeURIComponent($('#GridActions' + gridId).val());
+        var columns = $('#Grid' + gridId).getGridParam('colModel');
+        for (var i = 0; i < columns.length; i++) {
+            var pattern = new RegExp('\\[' + columns[i].name + '\\]', 'gi');
+            actions = actions.replace(pattern, rowObject[i]);
+        }
+        return actions;
+    }
+
+    $(document).ready(function () {
+        var gridId = '@gridGuid';
+	    $("#Grid" + gridId).jqGrid({
+		    url: GetCallbackUrl(gridId),
+		    datatype: 'json',
+		    colNames: @Html.Raw(jsColumns),
+		    colModel: @Html.Raw(jsColumnModels),
+		    pager: $('#GridPager' + gridId),
+		    rowNum: 50,
+		    rowList: [5, 10, 20, 50, 100],
+		    height: 'auto',
+            cellLayout: 10,
+		    gridComplete: function () {
+			    SetGridWidth(gridId);
+		    }
+	    });
+	    $(window).resize(function() {
+		    SetGridWidth(gridId);
+	    });		
+    });
+</script>

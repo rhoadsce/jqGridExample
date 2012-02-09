@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@ViewBag.Message</h2>
+
+@Html.ActionLink("Categories", "Index", "Category")
+<br />
+<br />
+@Html.ActionLink("Sync Grid Definitions", "SyncGrids", "GridExecution")

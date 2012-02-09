@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Grid xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GridId>0</GridId>
+  <Name>ProductsByCategoryId</Name>
+  <Title>Products By Category</Title>
+  <StoredProcedure>ProductsByCategoryId</StoredProcedure>
+  <Columns>
+    <GridColumn>
+      <GridColumnId>0</GridColumnId>
+      <Name>ProductId</Name>
+      <Caption>ProductId</Caption>
+      <DataType>System.Int32</DataType>
+      <IsHidden>true</IsHidden>
+    </GridColumn>
+    <GridColumn>
+      <GridColumnId>0</GridColumnId>
+      <Name>Name</Name>
+      <Caption>Name</Caption>
+      <DataType>System.String</DataType>
+      <IsHidden>false</IsHidden>
+    </GridColumn>
+    <GridColumn>
+      <GridColumnId>0</GridColumnId>
+      <Name>Description</Name>
+      <Caption>Description</Caption>
+      <DataType>System.String</DataType>
+      <IsHidden>false</IsHidden>
+    </GridColumn>
+    <GridColumn>
+      <GridColumnId>0</GridColumnId>
+      <Name>Price</Name>
+      <Caption>Price</Caption>
+      <DataType>System.Decimal</DataType>
+      <IsHidden>false</IsHidden>
+    </GridColumn>
+  </Columns>
+  <Parameters>
+    <GridParameter>
+      <GridParameterId>0</GridParameterId>
+      <Name>CategoryId</Name>
+      <Caption>CategoryId</Caption>
+      <DataType>System.Int32</DataType>
+      <IsHidden>true</IsHidden>
+    </GridParameter>
+  </Parameters>
+  <Actions />
+</Grid>
